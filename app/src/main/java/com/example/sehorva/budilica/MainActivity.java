@@ -13,11 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     AlarmManager alarm_manager;
     TimePicker alarm_timepicker;
@@ -93,7 +96,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //stvaranje spinnera
+        Spinner spinner = (Spinner) findViewById(R.id.alarm_spinner);
+        //stvaranje ArrayAdaptera koristeći string array i defaultni spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.budilica_niz, R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
 
         //inicijalizacija stop gumba
         Button alarm_off = (Button) findViewById(R.id.alarm_off);
@@ -145,5 +154,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
