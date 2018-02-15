@@ -57,6 +57,44 @@ public class RingtonePlayingService extends Service {
                 break;
         }
 
+
+        //notifikacija
+        //postavi notification service
+        NotificationManager notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        //postaviti intent koji ide MainActivity
+        Intent intent_main_activity = new Intent(this.getApplicationContext(), MainActivity.class);
+
+        //postaviti pending intent (jer ne ide odmah, čeka alarm)
+        PendingIntent pending_intent_main_activity = PendingIntent.getActivity(this, 0,
+                intent_main_activity, 0);
+
+        String channelId = "some_channel_id";
+
+        CharSequence channelName = "Some Channel";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+        notificationChannel.enableLights(true);
+        notificationChannel.setLightColor(Color.RED);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        notify_manager.createNotificationChannel(notificationChannel);
+
+        int notifyId = 1;
+
+
+
+        //notification parametri
+        Notification notification_popup = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.clock)
+                .setContentTitle("Alarm svira!")
+                .setContentText("Klikni me!")
+                .setContentIntent(pending_intent_main_activity)
+                .setAutoCancel(true) //kad kliknemo na njega, automatski nestane
+                .setChannelId(channelId)
+                .build();
+
+
         //if elseovi
 
         //ako ništa ne svira i pritisne se "Postavi" --> glazba treba početi svirati
@@ -71,45 +109,9 @@ public class RingtonePlayingService extends Service {
             this.isRunning = true;
             this.startId = 0;
 
-            //notifikacija
-            //postavi notification service
-            NotificationManager notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            //postaviti intent koji ide MainActivity
-            Intent intent_main_activity = new Intent(this.getApplicationContext(), MainActivity.class);
-
-            //postaviti pending intent (jer ne ide odmah, čeka alarm)
-            PendingIntent pending_intent_main_activity = PendingIntent.getActivity(this, 0,
-                    intent_main_activity, 0);
-
-            String channelId = "some_channel_id";
-
-            CharSequence channelName = "Some Channel";
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            notify_manager.createNotificationChannel(notificationChannel);
-
-            int notifyId = 1;
-
-
-
-            //notification parametri
-            Notification notification_popup = new Notification.Builder(this)
-                    .setSmallIcon(R.drawable.clock)
-                    .setContentTitle("Alarm svira!")
-                    .setContentText("Klikni me!")
-                    .setContentIntent(pending_intent_main_activity)
-                    .setAutoCancel(true) //kad kliknemo na njega, automatski nestane
-                    .setChannelId(channelId)
-                    .build();
 
             //postaviti notification start command
             notify_manager.notify(0,notification_popup);
-
         }
 
         //ako se svira i pritisne se "Odbaci" --> glazba treba prestati

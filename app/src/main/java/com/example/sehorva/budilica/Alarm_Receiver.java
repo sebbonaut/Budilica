@@ -13,9 +13,16 @@ public class Alarm_Receiver extends BroadcastReceiver{
         Log.e("Unutar receivera.","OK");
 
         //dohvati extra string iz intenta
+        //kaže je li pritisnut gumb "Postavi" ili "Odbaci"
         String get_your_string = intent.getExtras().getString("extra");
 
         Log.e("Key jednak: ", get_your_string);
+
+        //dohvati extra long iz intenta
+        //kaže koju pjesmu (koji id) je izabrao korisnik iz spinnera
+        Long get_your_alarm_choice = intent.getExtras().getLong("alarm_choice");
+
+        Log.e("Izabrani alarm je ", get_your_alarm_choice.toString());
 
         //stvaramo intent za ringtone service
         Intent service_intent = new Intent(context, RingtonePlayingService.class);

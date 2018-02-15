@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //za stvaranje alarm managera
     PendingIntent pending_intent;
+    long choose_alarm_sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //kaže clock-u da je pritisnut "Postavi" gumb
                 my_intent.putExtra("extra", "alarm on");
 
+                //stavi extra long u my_intent
+                //kaže clock-u koju smo pjesmu (tj. id) izabrali iz spinnera
+                my_intent.putExtra("alarm_choice", choose_alarm_sound);
+
 
                 //stvori pending intent koji odgađa intent do zadanog vremena kalendara
                 pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -103,6 +110,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 R.array.budilica_niz, R.layout.support_simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        //postavljanje onClick listenera za onItemSelected metodu
+        spinner.setOnItemSelectedListener(this);
+
 
         //inicijalizacija stop gumba
         Button alarm_off = (Button) findViewById(R.id.alarm_off);
@@ -123,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //stavi extra string u my_intent
                 //kaže clock-u da je pritisnut "Odbaci" gumb
                 my_intent.putExtra("extra", "alarm off");
+
+                //također stavim extra long (da se program ne skrši (Null Pointer Exception))
+                my_intent.putExtra("alarm_choice", choose_alarm_sound);
+                Log.e("Alarm id je ", String.valueOf(choose_alarm_sound));
 
                 //zaustavljanje zvuka alarma
                 sendBroadcast(my_intent);
@@ -157,8 +172,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
+        //koji id je izabran iz spinnera
+        Toast.makeText(this, "spinner item je "+id, Toast.LENGTH_SHORT).show();
+        choose_alarm_sound = id;
     }
 
     @Override
