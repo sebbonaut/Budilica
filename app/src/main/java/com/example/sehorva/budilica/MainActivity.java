@@ -1,7 +1,9 @@
 package com.example.sehorva.budilica;
 
 import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     TimePicker alarm_timepicker;
     TextView update_text;
     Context context;
+
+    //za stvaranje alarm managera
+    PendingIntent pending_intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
         //stvaranje kalendara
         final Calendar calendar = Calendar.getInstance();
+
+        //stvaranje intenta za Alarm Receiver klasu
+        final Intent my_intent = new Intent(this.context, Alarm_Receiver.class);
 
         //incijalizacija start gumba
         Button alarm_on = (Button) findViewById(R.id.alarm_on);
@@ -71,7 +79,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //metoda koja mijenja tekst u textboxu
                 set_alarm_text("Alarm postavljen u " + hour_string + " sati i " + minute_string + " minuta.");
+
+                pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                //postavimo alarm manager
+                alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
             }
+
         });
 
         //inicijalizacija stop gumba
@@ -84,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //metoda koja mijenja tekst u textboxu
                 set_alarm_text("Alarm isključen!");
+
+                //otkaži alarm
+                alarm_manager.cancel(pending_intent);
             }
         });
     }
