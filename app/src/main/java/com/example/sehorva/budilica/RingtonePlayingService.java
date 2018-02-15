@@ -14,6 +14,7 @@ public class RingtonePlayingService extends Service {
 
     MediaPlayer media_song;
     int startId;
+    boolean isRunning;
 
     @Nullable
     @Override
@@ -30,6 +31,7 @@ public class RingtonePlayingService extends Service {
 
         Log.e("Ringtone state extra: ", state);
 
+        //pretvara extra stringove iz intenta u start Idijove, 0 ili 1
         assert state != null;
         switch (state) {
             case "alarm on":
@@ -44,9 +46,49 @@ public class RingtonePlayingService extends Service {
                 break;
         }
 
-        //stvaranje instance media playera
-        media_song = MediaPlayer.create(this, R.raw.dove);
-        media_song.start();
+        //if elseovi
+
+        //ako ništa ne svira i pritisne se "Postavi" --> glazba treba početi svirati
+        if(!this.isRunning && startId == 1){
+            Log.e("nema glazbe:", "sviraj");
+
+            //stvaranje instance media playera
+            media_song = MediaPlayer.create(this, R.raw.dove);
+            //pokreni alarm
+            media_song.start();
+
+            this.isRunning = true;
+            this.startId = 0;
+
+        }
+
+        //ako se svira i pritisne se "Odbaci" --> glazba treba prestati
+        else if(this.isRunning && startId == 0){
+            Log.e("glazba svira:","zaustavi");
+
+            //zaustavi alarm
+            media_song.stop();
+            media_song.reset();
+
+            this.isRunning = false;
+            this.startId = 0;
+        }
+
+        //ako ništa ne svira i pritisne se "Odbaci" --> ne radi ništa
+        else if(!this.isRunning /*&& startId == 0*/) {
+            Log.e("nema glazbe:", "zaustavi");
+
+            this.isRunning = false;
+            this.startId  = 0;
+        }
+
+        //ako glazba svira i pritisne se "Postavi" --> ništa
+        else /*if(this.isRunning && startId == 1)*/ {
+            Log.e("glazba svira:", "sviraj?");
+
+            this.isRunning = true;
+            this.startId = 1;
+        }
 
         return START_NOT_STICKY;
     }
@@ -54,6 +96,9 @@ public class RingtonePlayingService extends Service {
     @Override
     public void onDestroy(){
         //obavijesti korisnika da si zaustavljen
-        Toast.makeText(this, "onDestroy pozvan", Toast.LENGTH_SHORT).show();
+        Log.e("pozvan onDestroy", "kraj");
+
+        super.onDestroy();
+        this.isRunning = false;
     }
 }
