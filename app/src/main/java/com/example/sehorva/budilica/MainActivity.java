@@ -1,5 +1,8 @@
 package com.example.sehorva.budilica;
 
+import android.app.AlarmManager;
+import android.content.Context;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,8 +11,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 public class MainActivity extends AppCompatActivity {
+
+    AlarmManager alarm_manager;
+    TimePicker alarm_timepicker;
+    TextView update_text;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +29,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.context = this;
+
+        //inicijalizacija timepickera
+        alarm_timepicker = (TimePicker) findViewById(R.id.timePicker);
+
+        //inicijalizacija time managera
+        alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        //incijalizacija text boxa
+        update_text = (TextView) findViewById(R.id.update_text);
+
+        //stvaranje kalendara
+        Calendar calendar = Calendar.getInstance();
+
+        //incijalizacija start gumba
+        Button alarm_on = (Button) findViewById(R.id.alarm_on);
+
+        //stvaranje onClick listenera za pokretanje alarma
+        //...
+
+        //inicijalizacija stop gumba
+        Button alarm_off = (Button) findViewById(R.id.alarm_off);
+
+        //stvaranje onClick listenera za zaustavljanje alarma
+        // ili poništavanje postavljanja alarma
+        //...
     }
 
     @Override

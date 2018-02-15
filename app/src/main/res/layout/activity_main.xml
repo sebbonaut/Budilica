@@ -17,7 +17,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <TimePicker
-        android:id="@+id/timePicker3"
+        android:id="@+id/timePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -29,31 +29,31 @@
         android:orientation="horizontal"
         android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Button"
-      />
+        <Button
+            android:id="@+id/alarm_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Postavi"
+            tools:clickable="true" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Button"
-        />
+        <Button
+            android:id="@+id/alarm_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Odbaci"
+            tools:clickable="true" />
 
         </LinearLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/update_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginTop="50dp"
-        android:text="TextView"
+        android:text="Alarm nije postavljen"
         android:layout_gravity="center"/>
 
 
