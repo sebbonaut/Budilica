@@ -1,5 +1,8 @@
 package com.example.sehorva.budilica;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -31,6 +34,8 @@ public class RingtonePlayingService extends Service {
 
         Log.e("Ringtone state extra: ", state);
 
+
+
         //pretvara extra stringove iz intenta u start Idijove, 0 ili 1
         assert state != null;
         switch (state) {
@@ -59,6 +64,28 @@ public class RingtonePlayingService extends Service {
 
             this.isRunning = true;
             this.startId = 0;
+
+            //notifikacija
+            //postavi notification service
+            NotificationManager notify_manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            //postaviti intent koji ide MainActivity
+            Intent intent_main_activity = new Intent(this.getApplicationContext(), MainActivity.class);
+
+            //postaviti pending intent (jer ne ide odmah, čeka alarm)
+            PendingIntent pending_intent_main_activity = PendingIntent.getActivity(this, 0,
+                    intent_main_activity, 0);
+
+            //notification parametri
+            Notification notification_popup = new Notification.Builder(this)
+                    .setContentTitle("Alarm svira!")
+                    .setContentText("Klikni me!")
+                    .setContentIntent(pending_intent_main_activity)
+                    .setAutoCancel(true) //kad kliknemo na njega, automatski nestane
+                    .build();
+
+            //postaviti notification start command
+            notify_manager.notify(0,notification_popup);
 
         }
 
