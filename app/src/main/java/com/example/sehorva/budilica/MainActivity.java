@@ -41,20 +41,55 @@ public class MainActivity extends AppCompatActivity {
         update_text = (TextView) findViewById(R.id.update_text);
 
         //stvaranje kalendara
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
 
         //incijalizacija start gumba
         Button alarm_on = (Button) findViewById(R.id.alarm_on);
 
         //stvaranje onClick listenera za pokretanje alarma
-        //...
+        alarm_on.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                //postavljanje kalendara sa odabranim satom i minutama iz time pickera
+                calendar.set(Calendar.HOUR_OF_DAY, alarm_timepicker.getHour());
+                calendar.set(Calendar.MINUTE, alarm_timepicker.getMinute());
+
+                //dohvati vrijednosti za sate i minute
+                int hour = alarm_timepicker.getHour();
+                int minute = alarm_timepicker.getMinute();
+
+                //pretvorim gornje intove u stringove
+                String hour_string = String.valueOf(hour);
+                String minute_string = String.valueOf(minute);
+
+                //12:5 --> 12:05
+                if(minute < 10)
+                {
+                    minute_string = "0" + String.valueOf(minute);
+                }
+
+                //metoda koja mijenja tekst u textboxu
+                set_alarm_text("Alarm postavljen u " + hour_string + " sati i " + minute_string + " minuta.");
+            }
+        });
 
         //inicijalizacija stop gumba
         Button alarm_off = (Button) findViewById(R.id.alarm_off);
 
         //stvaranje onClick listenera za zaustavljanje alarma
         // ili poništavanje postavljanja alarma
-        //...
+        alarm_off.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //metoda koja mijenja tekst u textboxu
+                set_alarm_text("Alarm isključen!");
+            }
+        });
+    }
+
+    private void set_alarm_text(String s) {
+        update_text.setText(s);
     }
 
     @Override
