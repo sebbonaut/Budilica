@@ -8,13 +8,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-/**
- * Created by sehorva on 2/15/18.
- */
+
 
 public class RingtonePlayingService extends Service {
 
     MediaPlayer media_song;
+    int startId;
 
     @Nullable
     @Override
@@ -24,11 +23,31 @@ public class RingtonePlayingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        Log.e("LocalService", "Receiver start id "+startId+": "+intent);
+
+        //dohvati extra string vrijednosti
+        String state = intent.getExtras().getString("extra");
+
+        Log.e("Ringtone state extra: ", state);
+
+        assert state != null;
+        switch (state) {
+            case "alarm on":
+                startId = 1;
+                break;
+            case "alarm off":
+                startId = 0;
+                Log.e("Start Id je ", state);
+                break;
+            default:
+                startId = 0;
+                break;
+        }
+
         //stvaranje instance media playera
         media_song = MediaPlayer.create(this, R.raw.dove);
         media_song.start();
 
-        Log.e("LocalService", "Receiver start id "+startId+": "+intent);
         return START_NOT_STICKY;
     }
 

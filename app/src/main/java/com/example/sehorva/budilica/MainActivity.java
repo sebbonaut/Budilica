@@ -80,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
                 //metoda koja mijenja tekst u textboxu
                 set_alarm_text("Alarm postavljen u " + hour_string + " sati i " + minute_string + " minuta.");
 
+                //stavi extra string u my_intent
+                //kaže clock-u da je pritisnut "Postavi" gumb
+                my_intent.putExtra("extra", "alarm on");
+
+
+                //stvori pending intent koji odgađa intent do zadanog vremena kalendara
                 pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 //postavimo alarm manager
@@ -101,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //otkaži alarm
                 alarm_manager.cancel(pending_intent);
+
+                //stavi extra string u my_intent
+                //kaže clock-u da je pritisnut "Odbaci" gumb
+                my_intent.putExtra("extra", "alarm off");
+
+                //zaustavljanje zvuka alarma
+                sendBroadcast(my_intent);
             }
         });
     }
