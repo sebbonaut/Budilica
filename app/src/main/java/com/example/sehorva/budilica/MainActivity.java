@@ -91,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 //postavimo alarm manager
                 alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
             }
-
         });
+
+
 
         //inicijalizacija stop gumba
         Button alarm_off = (Button) findViewById(R.id.alarm_off);
