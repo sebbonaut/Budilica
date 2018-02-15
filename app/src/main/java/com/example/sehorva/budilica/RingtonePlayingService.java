@@ -35,10 +35,15 @@ public class RingtonePlayingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         Log.e("LocalService", "Receiver start id "+startId+": "+intent);
 
-        //dohvati extra string vrijednosti
+        //dohvati extra string vrijednosti iz alarm on/alarm off vrijednosti
         String state = intent.getExtras().getString("extra");
 
+        //dohvati alarm izbor int vrijednosti
+        Integer alarm_sound_choice = intent.getExtras().getInt("alarm_choice");
+
+
         Log.e("Ringtone state extra: ", state);
+        Log.e("Alarm izbor je: ", alarm_sound_choice.toString());
 
 
 

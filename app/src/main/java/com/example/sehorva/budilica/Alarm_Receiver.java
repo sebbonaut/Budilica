@@ -20,15 +20,18 @@ public class Alarm_Receiver extends BroadcastReceiver{
 
         //dohvati extra long iz intenta
         //kaže koju pjesmu (koji id) je izabrao korisnik iz spinnera
-        Long get_your_alarm_choice = intent.getExtras().getLong("alarm_choice");
+        int get_your_alarm_choice = intent.getExtras().getInt("alarm_choice");
 
-        Log.e("Izabrani alarm je ", get_your_alarm_choice.toString());
+        Log.e("Izabrani alarm je ", String.valueOf(get_your_alarm_choice));
 
         //stvaramo intent za ringtone service
         Intent service_intent = new Intent(context, RingtonePlayingService.class);
 
         //proslijedi extra string iz MainActivity RingtonePlayingService-u
         service_intent.putExtra("extra", get_your_string);
+
+        //proslijedi extra long iz Receivera u RingtonePlayingService
+        service_intent.putExtra("alarm_choice", get_your_alarm_choice);
 
         //pokrenemo ringtone service
         context.startService(service_intent);

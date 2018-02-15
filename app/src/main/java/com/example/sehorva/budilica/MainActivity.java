@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //za stvaranje alarm managera
     PendingIntent pending_intent;
-    long choose_alarm_sound;
+    int choose_alarm_sound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //koji id je izabran iz spinnera
         Toast.makeText(this, "spinner item je "+id, Toast.LENGTH_SHORT).show();
-        choose_alarm_sound = id;
+        choose_alarm_sound = (int) id;
     }
 
     @Override

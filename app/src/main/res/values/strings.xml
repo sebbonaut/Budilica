@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="budilica_niz">
+        <item>Izaberi zvuk alarma</item>
         <item>Bip</item>
         <item>Glasni</item>
         <item>Laganini</item>
