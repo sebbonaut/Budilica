@@ -106,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
                 set_alarm_text("Alarm isključen!");
 
                 //otkaži alarm
-                alarm_manager.cancel(pending_intent);
+                try {
+                    alarm_manager.cancel(pending_intent);
+                } catch (Exception e){}
 
                 //stavi extra string u my_intent
                 //kaže clock-u da je pritisnut "Odbaci" gumb

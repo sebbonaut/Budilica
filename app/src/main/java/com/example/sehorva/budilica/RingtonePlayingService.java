@@ -1,19 +1,25 @@
 package com.example.sehorva.budilica;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 
 
 public class RingtonePlayingService extends Service {
+
 
     MediaPlayer media_song;
     int startId;
@@ -67,7 +73,7 @@ public class RingtonePlayingService extends Service {
 
             //notifikacija
             //postavi notification service
-            NotificationManager notify_manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationManager notify_manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             //postaviti intent koji ide MainActivity
             Intent intent_main_activity = new Intent(this.getApplicationContext(), MainActivity.class);
@@ -76,12 +82,29 @@ public class RingtonePlayingService extends Service {
             PendingIntent pending_intent_main_activity = PendingIntent.getActivity(this, 0,
                     intent_main_activity, 0);
 
+            String channelId = "some_channel_id";
+
+            CharSequence channelName = "Some Channel";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notify_manager.createNotificationChannel(notificationChannel);
+
+            int notifyId = 1;
+
+
+
             //notification parametri
             Notification notification_popup = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.clock)
                     .setContentTitle("Alarm svira!")
                     .setContentText("Klikni me!")
                     .setContentIntent(pending_intent_main_activity)
                     .setAutoCancel(true) //kad kliknemo na njega, automatski nestane
+                    .setChannelId(channelId)
                     .build();
 
             //postaviti notification start command
