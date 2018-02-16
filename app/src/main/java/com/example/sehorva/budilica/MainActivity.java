@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     CheckBox repeat_alarm;
     Spinner spinner;
 
+    //string u textviewu (obavijest o postavljanju alarma)
+    String obavijest = " ";
+
     //ponavljam alarm ili ne
     boolean repeating;
 
@@ -103,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
 
                 //metoda koja mijenja tekst u textboxu
-                set_alarm_text("Alarm postavljen u " + hour_string + " sati i " + minute_string + " minuta.");
+                obavijest = "Alarm postavljen u " + hour_string + " sati i " + minute_string + " minuta.";
+                set_alarm_text(obavijest);
 
                 //stavi extra string u my_intent
                 //kaže clock-u da je pritisnut "Postavi" gumb
@@ -152,7 +156,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View view) {
                 //metoda koja mijenja tekst u textboxu
-                set_alarm_text("Alarm isključen!");
+                obavijest = "Alarm isključen!";
+                set_alarm_text(obavijest);
 
                 //otkaži alarm
                 try {
@@ -174,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void set_alarm_text(String s) {
+        update_text.setTextColor(boja_teksta);
         update_text.setText(s);
     }
 
@@ -212,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ((Spinner)this.findViewById(R.id.alarm_spinner)).setBackgroundColor(boja_pozadine);
             ((TextView) ((Spinner) this.findViewById(R.id.alarm_spinner)).getChildAt(0)).setTextColor(boja_teksta);
 
-            ((TextView) this.findViewById(R.id.update_text)).setTextColor(boja_teksta);
+            set_alarm_text(obavijest);
 
             return true;
         }
