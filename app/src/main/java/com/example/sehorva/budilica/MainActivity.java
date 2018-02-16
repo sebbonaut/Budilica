@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
         //koji id je izabran iz spinnera
-        Toast.makeText(this, "spinner item je "+id, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "spinner item je "+id, Toast.LENGTH_SHORT).show();
         choose_alarm_sound = (int) id;
     }
 

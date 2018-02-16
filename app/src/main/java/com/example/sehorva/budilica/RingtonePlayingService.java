@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import java.util.Random;
 
 
 public class RingtonePlayingService extends Service {
@@ -106,10 +107,6 @@ public class RingtonePlayingService extends Service {
         if(!this.isRunning && startId == 1){
             Log.e("nema glazbe:", "sviraj");
 
-            //stvaranje instance media playera
-            media_song = MediaPlayer.create(this, R.raw.dove);
-            //pokreni alarm
-            media_song.start();
 
             this.isRunning = true;
             this.startId = 0;
@@ -117,6 +114,42 @@ public class RingtonePlayingService extends Service {
 
             //postaviti notification start command
             notify_manager.notify(0,notification_popup);
+
+            if(alarm_sound_choice == 0)
+            {
+                //sviraj random izabranu stvar
+                int number_of_songs = 5;
+
+                Random random_number = new Random();
+                int alarm_number = random_number.nextInt(number_of_songs)+1;
+                Log.e("Slučajan broj je ", String.valueOf(alarm_number));
+                alarm_sound_choice = alarm_number;
+            }
+
+            //stvaranje instance media playera
+            switch (alarm_sound_choice)
+            {
+                case 1:
+                    media_song = MediaPlayer.create(this, R.raw.bip);
+                    break;
+                case 2:
+                    media_song = MediaPlayer.create(this, R.raw.dove);
+                    break;
+                case 3:
+                    media_song = MediaPlayer.create(this, R.raw.laganini);
+                    break;
+                case 4:
+                    media_song = MediaPlayer.create(this, R.raw.moderni);
+                    break;
+                case 5:
+                    media_song = MediaPlayer.create(this, R.raw.reklama);
+                    break;
+                default:
+                    break;
+            }
+
+            //pokreni alarm
+            media_song.start();
         }
 
         //ako se svira i pritisne se "Odbaci" --> glazba treba prestati
