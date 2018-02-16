@@ -171,7 +171,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 //otkaži alarm
                 try {
-                    alarm_manager.cancel(pending_intent);
+                    PendingIntent sender = PendingIntent.getBroadcast(context, 0, my_intent, 0);
+                    alarm_manager.cancel(sender);
                 } catch (Exception e){}
 
                 //stavi extra string u my_intent
