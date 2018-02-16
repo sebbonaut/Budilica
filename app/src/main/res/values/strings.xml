@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Budilica</string>
     <string name="action_settings">Settings</string>
+    <string name="Boja_pozadine">Pali/gasi svjetlo</string>
 
     <string-array name="budilica_niz">
         <item>Izaberi zvuk alarma</item>

@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.sql.Time;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     AlarmManager alarm_manager;
@@ -30,9 +33,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TextView update_text;
     Context context;
     CheckBox repeat_alarm;
+    Spinner spinner;
 
     //ponavljam alarm ili ne
     boolean repeating;
+
+    //boja pozadine
+     int boja_pozadine = Color.WHITE;
+     int boja_teksta = Color.BLACK;
 
     //za stvaranje alarm managera
     PendingIntent pending_intent;
@@ -124,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         //stvaranje spinnera
-        Spinner spinner = (Spinner) findViewById(R.id.alarm_spinner);
+        spinner = (Spinner) findViewById(R.id.alarm_spinner);
         //stvaranje ArrayAdaptera koristeći string array i defaultni spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.budilica_niz, R.layout.support_simple_spinner_dropdown_item);
@@ -184,7 +192,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.background_color) {
+            if(boja_pozadine == Color.WHITE)
+            {
+                //pozadina u crnu, tekst bijeli
+                boja_pozadine = Color.BLACK;
+                boja_teksta = Color.WHITE;
+            }
+            else if(boja_pozadine == Color.BLACK) {
+                //pozadina u bijelu, tekst crn
+                boja_pozadine = Color.WHITE;
+                boja_teksta = Color.BLACK;
+            }
+
+            //postavljanje boje pozadine
+            this.findViewById(R.id.pozadina).setBackgroundColor(boja_pozadine);
+            ((CheckBox)this.findViewById(R.id.checkBox)).setTextColor(boja_teksta);
+
+            ((Spinner)this.findViewById(R.id.alarm_spinner)).setBackgroundColor(boja_pozadine);
+            ((TextView) ((Spinner) this.findViewById(R.id.alarm_spinner)).getChildAt(0)).setTextColor(boja_teksta);
+
+            ((TextView) this.findViewById(R.id.update_text)).setTextColor(boja_teksta);
+
             return true;
         }
 
@@ -198,6 +227,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //koji id je izabran iz spinnera
         //Toast.makeText(this, "spinner item je "+id, Toast.LENGTH_SHORT).show();
         choose_alarm_sound = (int) id;
+
+        ((TextView) ((Spinner) this.findViewById(R.id.alarm_spinner)).getChildAt(0)).setTextColor(boja_teksta);
     }
 
     @Override
