@@ -93,7 +93,7 @@ public class RingtonePlayingService extends Service {
 
         //notification parametri
         Notification notification_popup = new Notification.Builder(this, channelId)
-                .setSmallIcon(R.drawable.clock)
+                .setSmallIcon(R.drawable.exclamation)
                 .setContentTitle("Alarm svira!")
                 .setContentText("Klikni me!")
                 .setContentIntent(pending_intent_main_activity)
@@ -183,6 +183,17 @@ public class RingtonePlayingService extends Service {
             //zaustavi alarm
             media_song.stop();
             media_song.reset();
+
+            if(alarm_sound_choice == 0)
+            {
+                //sviraj random izabranu stvar
+                int number_of_songs = 5;
+
+                Random random_number = new Random();
+                int alarm_number = random_number.nextInt(number_of_songs)+1;
+                Log.e("Slučajan broj je ", String.valueOf(alarm_number));
+                alarm_sound_choice = alarm_number;
+            }
 
             //stvaranje instance media playera
             switch (alarm_sound_choice)

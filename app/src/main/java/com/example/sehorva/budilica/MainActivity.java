@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         this.context = this;
 
+        //orijentacija
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         //nema ponavljanja po defaultu
         repeating = false;
