@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 import java.sql.Time;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+    public static final String MYPREFS = "mojePreference";
 
     AlarmManager alarm_manager;
     TimePicker alarm_timepicker;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
         this.context = this;
+
 
         //nema ponavljanja po defaultu
         repeating = false;
@@ -176,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 sendBroadcast(my_intent);
             }
         });
+
+        //postavljanje boja na početku
+       // setVariousColors();
     }
 
     private void set_alarm_text(String s) {
@@ -199,32 +206,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.background_color) {
-            if(boja_pozadine == Color.WHITE)
-            {
-                //pozadina u crnu, tekst bijeli
-                boja_pozadine = Color.BLACK;
-                boja_teksta = Color.WHITE;
-            }
-            else if(boja_pozadine == Color.BLACK) {
-                //pozadina u bijelu, tekst crn
-                boja_pozadine = Color.WHITE;
-                boja_teksta = Color.BLACK;
-            }
-
-            //postavljanje boje pozadine
-            this.findViewById(R.id.pozadina).setBackgroundColor(boja_pozadine);
-            ((CheckBox)this.findViewById(R.id.checkBox)).setTextColor(boja_teksta);
-
-            ((Spinner)this.findViewById(R.id.alarm_spinner)).setBackgroundColor(boja_pozadine);
-            ((TextView) ((Spinner) this.findViewById(R.id.alarm_spinner)).getChildAt(0)).setTextColor(boja_teksta);
-
-            set_alarm_text(obavijest);
-
+            setVariousColors();
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setVariousColors()
+    {
+        if(boja_pozadine == Color.WHITE)
+        {
+            //pozadina u crnu, tekst bijeli
+            boja_pozadine = Color.BLACK;
+            boja_teksta = Color.WHITE;
+        }
+        else if(boja_pozadine == Color.BLACK) {
+            //pozadina u bijelu, tekst crn
+            boja_pozadine = Color.WHITE;
+            boja_teksta = Color.BLACK;
+        }
+
+        //postavljanje boje pozadine
+        this.findViewById(R.id.pozadina).setBackgroundColor(boja_pozadine);
+        ((CheckBox)this.findViewById(R.id.checkBox)).setTextColor(boja_teksta);
+
+        ((Spinner)this.findViewById(R.id.alarm_spinner)).setBackgroundColor(boja_pozadine);
+        ((TextView) ((Spinner) this.findViewById(R.id.alarm_spinner)).getChildAt(0)).setTextColor(boja_teksta);
+
+        set_alarm_text(obavijest);
     }
 
     @Override
@@ -254,4 +265,80 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         Log.e("Checkbox kliknut", "postavljeno = " + repeating);
     }
+
+    /*@Override
+    public void onSaveInstanceState(Bundle outState){
+        outState.putInt("bojaTeksta", boja_teksta);
+        outState.putInt("bojaPozadine", boja_pozadine);
+        outState.putBoolean("imaPonavljanja", repeating);
+        outState.putString("obavijest", obavijest);
+        super.onSaveInstanceState(outState);
+    }
+
+    //Za kasniji dohvat informacije
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        obavijest = savedInstanceState.getString("obavijest");
+        boja_teksta = savedInstanceState.getInt("bojaTeksta");
+        boja_pozadine = savedInstanceState.getInt("bojaPozadine");
+        repeating = savedInstanceState.getBoolean("imaPonavljanja");
+        Toast.makeText(this, "Pozvan rest", Toast.LENGTH_SHORT);
+    }*/
+
+
+    /*@Override
+    public void onStop() {
+        super.onStop();
+        savePreferences();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadPreferences();
+    }
+
+
+
+
+
+    protected void savePreferences(){
+        //stvorimo shared preference
+        int mode=MODE_PRIVATE;
+        SharedPreferences mySharedPreferences=getSharedPreferences(MYPREFS,mode);
+
+        //editor za modificiranje shared preference
+        SharedPreferences.Editor editor=mySharedPreferences.edit();
+
+        //spremamo vrijednosti u shared preference
+        editor.putBoolean("isTrue", true);
+        editor.putFloat("lastFloat",1f);
+        editor.putInt("wholeNumber", 5);
+        editor.putLong("aNumber", 35);
+        editor.putString("textEntryValue", "Neki tekst");
+
+        //commit promjene
+        editor.commit();
+    }
+
+    public void loadPreferences(){
+        // dohvatimo preference
+        int mode=MODE_PRIVATE;
+        SharedPreferences mySharedPreferences=getSharedPreferences(MYPREFS,mode);
+
+        //dohvatimo vrijednosti
+        boolean isTrue=mySharedPreferences.getBoolean("isTrue", false);
+        float lastFloat=mySharedPreferences.getFloat("lastFloat", 0f);
+        int wholeNumber=mySharedPreferences.getInt("WholeNumber", 7);
+        long aNumber=mySharedPreferences.getLong("aNumber", 0);
+        String stringPreference=mySharedPreferences.getString("textEntryValue", "nista");
+
+        //ispisemo string da se nesto ispise...
+        Toast.makeText(getBaseContext(),
+                stringPreference,
+                Toast.LENGTH_SHORT).show();
+
+    }*/
+
 }

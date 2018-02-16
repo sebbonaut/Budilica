@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
@@ -91,13 +92,12 @@ public class RingtonePlayingService extends Service {
 
 
         //notification parametri
-        Notification notification_popup = new Notification.Builder(this)
+        Notification notification_popup = new Notification.Builder(this, channelId)
                 .setSmallIcon(R.drawable.clock)
                 .setContentTitle("Alarm svira!")
                 .setContentText("Klikni me!")
                 .setContentIntent(pending_intent_main_activity)
                 .setAutoCancel(true) //kad kliknemo na njega, automatski nestane
-                .setChannelId(channelId)
                 .build();
 
 
