@@ -316,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         SharedPreferences mySharedPreferences=getSharedPreferences(MYPREFS,mode);
 
         //dohvatimo vrijednosti
-        boolean isTrue=mySharedPreferences.getBoolean("isTrue", false);
         boja_pozadine = mySharedPreferences.getInt("bojaPozadine", boja_pozadine);
         boja_teksta = mySharedPreferences.getInt("bojaTeksta", boja_teksta);
         repeating = mySharedPreferences.getBoolean("ponavljanje", repeating);
