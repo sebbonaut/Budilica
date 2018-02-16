@@ -99,7 +99,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 //postavimo alarm manager
-                alarm_manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
+                alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
+
+                //za ponavljanje
+                //long repeating_interval = 10 * 1000; //millis
+                //alarm_manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), repeating_interval, pending_intent);
             }
         });
 

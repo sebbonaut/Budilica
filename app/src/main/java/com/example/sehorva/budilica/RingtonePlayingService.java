@@ -145,6 +145,7 @@ public class RingtonePlayingService extends Service {
                     media_song = MediaPlayer.create(this, R.raw.reklama);
                     break;
                 default:
+                    media_song = MediaPlayer.create(this, R.raw.bip);
                     break;
             }
 
@@ -172,12 +173,42 @@ public class RingtonePlayingService extends Service {
             this.startId  = 0;
         }
 
-        //ako glazba svira i pritisne se "Postavi" --> ništa
+        //ako glazba svira i pritisne se "Postavi" --> ponovo pokreni
         else /*if(this.isRunning && startId == 1)*/ {
             Log.e("glazba svira:", "sviraj?");
 
             this.isRunning = true;
             this.startId = 1;
+
+            //zaustavi alarm
+            media_song.stop();
+            media_song.reset();
+
+            //stvaranje instance media playera
+            switch (alarm_sound_choice)
+            {
+                case 1:
+                    media_song = MediaPlayer.create(this, R.raw.bip);
+                    break;
+                case 2:
+                    media_song = MediaPlayer.create(this, R.raw.dove);
+                    break;
+                case 3:
+                    media_song = MediaPlayer.create(this, R.raw.laganini);
+                    break;
+                case 4:
+                    media_song = MediaPlayer.create(this, R.raw.moderni);
+                    break;
+                case 5:
+                    media_song = MediaPlayer.create(this, R.raw.reklama);
+                    break;
+                default:
+                    media_song = MediaPlayer.create(this, R.raw.bip);
+                    break;
+            }
+
+            //pokreni alarm
+            media_song.start();
         }
 
         return START_NOT_STICKY;
