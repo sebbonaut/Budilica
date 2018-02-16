@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     TimePicker alarm_timepicker;
     TextView update_text;
     Context context;
+    CheckBox repeat_alarm;
+
+    //ponavljam alarm ili ne
+    boolean repeating;
 
     //za stvaranje alarm managera
     PendingIntent pending_intent;
@@ -42,6 +47,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         this.context = this;
 
+        //nema ponavljanja po defaultu
+        repeating = false;
+
         //inicijalizacija timepickera
         alarm_timepicker = (TimePicker) findViewById(R.id.timePicker);
 
@@ -50,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //incijalizacija text boxa
         update_text = (TextView) findViewById(R.id.update_text);
+
+        //incijalizacija check boxa
+        repeat_alarm = (CheckBox) findViewById(R.id.checkBox);
 
         //stvaranje kalendara
         final Calendar calendar = Calendar.getInstance();
@@ -98,12 +109,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //stvori pending intent koji odgađa intent do zadanog vremena kalendara
                 pending_intent = PendingIntent.getBroadcast(MainActivity.this, 0, my_intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                //postavimo alarm manager
-                alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
 
-                //za ponavljanje
-                //long repeating_interval = 10 * 1000; //millis
-                //alarm_manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), repeating_interval, pending_intent);
+                if(repeating == false) {
+                    //postavimo alarm manager
+                    alarm_manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pending_intent);
+                }
+                else //if(repeating == true)
+                {
+                    //za ponavljanje
+                    long repeating_interval = 5 * 1000; //millis
+                    alarm_manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), repeating_interval, pending_intent);
+                }
             }
         });
 
@@ -187,5 +203,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void itemClicked(View view)
+    {
+        //pogledam je li označen checkbox za ponavljanje alarma
+        CheckBox checkBox = (CheckBox) view;
+        if(checkBox.isChecked()){
+            repeating = true;
+        }
+        else{
+            repeating = false;
+        }
+        Log.e("Checkbox kliknut", "postavljeno = " + repeating);
     }
 }
